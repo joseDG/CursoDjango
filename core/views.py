@@ -17,10 +17,3 @@ def index(request):
 
 def provincias(request):
   return ()
-
-   {'title': 'Camisa', 'price': 50, 'stock': True},
-      {'title': 'Pantalon', 'price': 100, 'stock': False},
-      {'title': 'Gafas', 'price': 35, 'stock': True},
-      {'title': 'Reloj', 'price': 15, 'stock': True}
-    ]
-  } )
