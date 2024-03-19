@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'applications.home',
     'applications.departamentos',
     'applications.empleados',
+    #apps de terceros
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

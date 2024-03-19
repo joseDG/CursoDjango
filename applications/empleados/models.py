@@ -1,5 +1,8 @@
 from django.db import models
 
+#importacion ckeditor
+from ckeditor.fields import RichTextField
+
 #modelo Departamento
 from applications.departamentos.models import Departamento
 
@@ -31,6 +34,8 @@ class Empleado(models.Model):
   #imagen = models.ImageField(, upload_to=None, height_field=None, width_field=None, max_length=None)
   departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
   habilidades = models.ManyToManyField(Habilidades)
+  full_name = models.CharField('Nombres Completos', max_length=50)
+  hoja_vida = RichTextField()
 
   def __str__(self):
     return self.first_name 

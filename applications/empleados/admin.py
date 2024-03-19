@@ -4,4 +4,26 @@ from .models import Empleado, Habilidades
 
 # Register your models here.
 admin.site.register(Habilidades)
-admin.site.register(Empleado)
+
+
+class EmpleadoAdmin(admin.ModelAdmin):
+  list_display = (
+    'first_name',
+    'last_name',
+    'departamento',
+    'job',
+    'full_name',
+  )
+  #funciones especiales en el Admin
+  def full_name(self, obj):
+    #print(obj)
+    return obj.first_name + ' ' + obj.last_name
+  
+  #agregando buscador
+  search_fields = ('full_name'),
+  list_filter = ('departamento','job', 'habilidades',)
+  filter_horizontal = ('habilidades',)
+
+
+
+admin.site.register(Empleado, EmpleadoAdmin)
