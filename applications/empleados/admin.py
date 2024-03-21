@@ -13,6 +13,7 @@ class EmpleadoAdmin(admin.ModelAdmin):
     'departamento',
     'job',
     'full_name',
+    'id',
   )
   #funciones especiales en el Admin
   def full_name(self, obj):

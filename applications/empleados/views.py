@@ -1,22 +1,19 @@
+from typing import Any
 from django.shortcuts import render
-
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 
 #model
 from .models import Empleado
 
 # Create your views here.
-"""
-3.- Listar empleados por trabajo (TAREA)
-
-5.- Listar habilidades de un empleado"""
-
 #1.- Lista todos los empleados de la empresa
 class ListAllEmpleados(ListView):
   template_name = 'persona/list_all.html'
+  paginate_by = 4
+  ordering = 'first_name'
   model = Empleado
-
-
+  
 #2.- Listar todos los empleados que pertenecen a un area de la empresa 
 class ListByAreaEmpleado(ListView):
   template_name = 'persona/list_by_area.html'
@@ -29,6 +26,27 @@ class ListByAreaEmpleado(ListView):
     print(lista)
     return lista
 
+#3.- Listar empleados por trabajo (TAREA)
+class ListByEmpleadoJob(ListView):
+  template_name = 'persona/list_by_job.html'
+
+  def get_queryset(self):
+    trabajo = self.kwargs['job']
+    if self.kwargs['job'] == 'Contador':
+      trabajo = '0'
+    elif self.kwargs['job'] == 'Administrador':
+      trabajo = '1'
+    elif self.kwargs['job'] == 'Economista':
+      trabajo = '2'
+
+    elif self.kwargs['job'] == 'Otro':
+      trabajo = '3'
+
+    lista = Empleado.objects.filter(
+      job = trabajo
+    )
+    print(lista)
+    return lista
 
 #4.- Listar los empleados por palabra clave
 class ListEmpleadosByKword(ListView):
@@ -44,3 +62,43 @@ class ListEmpleadosByKword(ListView):
     )
     print(lista)
     return lista 
+
+#5.- Listar habilidades de un empleado
+#ListView con la relacion ManyToMany
+class ListHabilidadesEmpleado(ListView):
+  template_name = 'persona/habilidades.html'
+  context_object_name = 'habilidades'
+
+  def get_queryset(self):
+    empleado = Empleado.objects.get(id=3)
+    print()
+    return empleado.habilidades.all()
+  
+#DetailView
+class EmpleadoDetailView(DetailView):
+  model = Empleado
+  template_name = 'persona/detail_empleado.html'
+
+  
+  def get_context_data(self, **kwargs):
+      context = super(EmpleadoDetailView, self).get_context_data(**kwargs)
+      context['titulo'] = 'Empleado del mes'
+      return context
+    
+#uso del templateView
+class SuccessView(TemplateView):
+  template_name = 'persona/success.html'
+
+# uso del createView 
+class EmpleadoCreateView(CreateView):
+  template_name = 'persona/add.html'
+  model = Empleado
+  fields = ['first_name', 'last_name', 'job', 'departamento', 'habilidades']
+  success_url = reverse_lazy('empleado_app:correcto')
+
+  def form_valid(self, form):
+      empleado = form.save(commit=False)
+      empleado.full_name = empleado.first_name + ' ' + empleado.last_name
+      empleado.save()
+      return super(EmpleadoCreateView, self).form_valid(form)
+  
