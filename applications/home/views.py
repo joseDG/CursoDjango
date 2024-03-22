@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, CreateView
+
+#importacion de FormsPrueba
+from .forms import PruebaForm
 
 #modelo Prueba
 from .models import Prueba
@@ -20,3 +23,8 @@ class ModeloPruebaListView(ListView):
   template_name = "home/pruebas.html"
   context_object_name = 'lista_prueba'
 
+class PruebaCreateView(CreateView):
+  template_name = 'home/add.html'
+  model = Prueba
+  form_class = PruebaForm
+  success_url = '/'
