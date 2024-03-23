@@ -14,6 +14,14 @@ class PruebaForm(forms.ModelForm):
       'subtitulo',
       'cantidad',
     )
+    #Personalizar
+    widgets = {
+       'titulo': forms.TextInput(
+          attrs = {
+             'placeholder': 'Ingrese el texto aqui'
+          }
+       )
+    }
 
   def clean_cantidad(self):
       cantidad = self.cleaned_data['cantidad']

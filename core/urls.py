@@ -32,5 +32,7 @@ urlpatterns = [
 
     #url empleados
     re_path('', include('applications.empleados.urls')),
+
+    re_path('', include('applications.departamentos.urls')),
     
 ]
